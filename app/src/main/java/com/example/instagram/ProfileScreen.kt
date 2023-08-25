@@ -1,14 +1,18 @@
 package com.example.instagram
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -21,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -38,6 +43,7 @@ fun ProfileScreen() {
         Spacer(modifier = Modifier.height(10.dp))
         TopBar(name = "starks_ether")
         Spacer(modifier = Modifier.height(4.dp))
+        ProfileSection(modifier = Modifier)
     }
 }
 
@@ -47,15 +53,15 @@ fun TopBar(
     modifier: Modifier = Modifier
 
 ) {
+    val scope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    SnackbarHost(hostState = snackBarHostState)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = modifier.fillMaxWidth()
     ) {
-        val scope = rememberCoroutineScope()
-        val snackBarHostState = remember { SnackbarHostState() }
-
-        SnackbarHost(hostState = snackBarHostState)
 
         Icon(
             imageVector = Icons.Default.ArrowBack,
@@ -99,22 +105,78 @@ fun ProfileSection(
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-            ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
 
-            }
+            RoundImage(
+                image = painterResource(id = R.drawable.telegram),
+                modifier = Modifier
+                    .size(100.dp)
+                    .weight(3f)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            StatsSection(modifier = modifier.weight(7f))
+        }
     }
 
 }
 
 @Composable
 fun RoundImage(
-        image:Painter,
-        modifier: Modifier= Modifier
+    image: Painter,
+    modifier: Modifier = Modifier
 ) {
+    Image(
+        painter = image,
+        contentDescription = null,
+        modifier = modifier
+            .aspectRatio(1f, matchHeightConstraintsFirst = true)
+            .border(width = 1.dp, shape = CircleShape, color = Color.Gray)
+            .padding(3.dp)
+            .clip(CircleShape)
+    )
+}
+
+@Composable
+fun StatsSection(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = modifier
+    ) {
+
+        ProfileStatistics(numberText = "60", text = "posts")
+        ProfileStatistics(numberText = "100K", text = "followers")
+        ProfileStatistics(numberText = "300", text = "following")
+    }
+}
+
+@Composable
+fun ProfileStatistics(
+    numberText: String,
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+
+        Text(
+            text = numberText,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = modifier.height(4.dp))
+
+        Text(text = text)
+    }
 
 }

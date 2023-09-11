@@ -78,7 +78,8 @@ fun ProfileScreen() {
                     text = "Test"
                 )
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
     }
@@ -358,7 +359,8 @@ fun ActionButton(
             )
         }
         icon?.let {
-            Icon(imageVector = icon,
+            Icon(
+                imageVector = icon,
                 contentDescription = null,
                 tint = Color.Black
             )
@@ -391,5 +393,4 @@ fun HighLightSection(
         }
 
     }
-
 }
